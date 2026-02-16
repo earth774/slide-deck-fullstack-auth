@@ -75,6 +75,7 @@ const Slide1 = () => (
         "⚡ Next.js 14",
         "🗄️ SQLite",
         "🔐 JWT",
+        "📋 Zod",
         "🎨 Tailwind CSS",
         "✍️ Tiptap Editor",
       ].map((t) => (
@@ -189,9 +190,9 @@ const Slide3 = () => (
           desc: "Rich text editor — like a mini Google Docs in your app.",
         },
         {
-          icon: "🟢",
-          name: "SQLite (file)",
-          desc: "Single file. No cloud or server setup required.",
+          icon: "📋",
+          name: "Zod",
+          desc: "Validate API input. Type-safe schemas — catch bad data early.",
         },
         {
           icon: "🔑",
@@ -379,11 +380,15 @@ export async function GET() {
   return Response.json(articles)
 }
 
-// POST /api/articles
+// POST /api/articles (verify JWT first!)
 export async function POST(req: Request) {
+  const userId = await verifyToken(req)  // get from JWT
+  if (!userId) return Response.json(
+    { error: "Unauthorized" }, { status: 401 }
+  )
   const body = await req.json()
   const article = await prisma.article.create({
-    data: body
+    data: { ...body, authorId: userId }
   })
   return Response.json(article, { status: 201 })
 }`}</MonoCode>
@@ -447,9 +452,81 @@ export async function POST(req: Request) {
   </div>
 );
 
+const SlideEnv = () => (
+  <div className="flex flex-col h-full p-10">
+    <SlideHeader tag="Setup" title="Environment Variables (.env)" />
+    <div className="grid grid-cols-2 gap-4 flex-1">
+      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+        <h3 className="text-sm font-bold text-gray-900 mb-2">📁 .env (never commit!)</h3>
+        <MonoCode>{`# Prisma — SQLite
+DATABASE_URL="file:./dev.db"
+
+# JWT secret (use strong random string)
+JWT_SECRET="your-super-secret-key"
+
+# Optional: for production
+NODE_ENV=development`}</MonoCode>
+      </div>
+      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+        <h3 className="text-sm font-bold text-gray-900 mb-2">💡 Usage in Code</h3>
+        <MonoCode>{`// lib/env.ts or directly
+const dbUrl = process.env.DATABASE_URL
+const jwtSecret = process.env.JWT_SECRET
+
+if (!jwtSecret) throw new Error("JWT_SECRET missing")`}</MonoCode>
+        <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-2.5">
+          <p className="text-xs font-bold text-amber-800">⚠️ Add .env to .gitignore</p>
+          <p className="text-xs text-amber-700 mt-1">Use .env.example for team (no secrets)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const SlideZod = () => (
+  <div className="flex flex-col h-full p-10">
+    <SlideHeader tag="Validation" title="Input Validation with Zod" />
+    <div className="grid grid-cols-2 gap-4 flex-1">
+      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+        <h3 className="text-sm font-bold text-gray-900 mb-2">📋 Define Schema</h3>
+        <MonoCode>{`import { z } from "zod"
+
+const createArticleSchema = z.object({
+  title: z.string().min(1).max(200),
+  content: z.string().min(1),
+  excerpt: z.string().max(300)
+})
+
+type CreateArticle = z.infer<typeof createArticleSchema>`}</MonoCode>
+      </div>
+      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+        <h3 className="text-sm font-bold text-gray-900 mb-2">✅ Validate in API</h3>
+        <MonoCode>{`export async function POST(req: Request) {
+  const body = await req.json()
+  const result = createArticleSchema.safeParse(body)
+
+  if (!result.success) {
+    return Response.json(
+      { error: result.error.flatten() },
+      { status: 400 }
+    )
+  }
+  const data = result.data  // type-safe!
+  ...
+}`}</MonoCode>
+      </div>
+    </div>
+  </div>
+);
+
 const Slide10 = () => (
   <div className="flex flex-col h-full p-10">
     <SlideHeader tag="Database" title="Database Schema — 3 Main Tables" />
+    <div className="mb-3 bg-indigo-50 border border-indigo-100 rounded-lg px-4 py-2">
+      <p className="text-xs font-mono text-indigo-700">
+        <span className="font-bold">SQLite:</span> datasource db &#123; provider = &quot;sqlite&quot; url = &quot;file:./dev.db&quot; &#125;
+      </p>
+    </div>
     <div className="grid grid-cols-3 gap-3 flex-1">
       {[
         {
@@ -473,7 +550,7 @@ const Slide10 = () => (
             ["title", "String", ""],
             ["slug", "String @unique", ""],
             ["excerpt", "String", ""],
-            ["content", "String @db.Text", ""],
+            ["content", "String", ""],
             ["authorId", "String", ""],
             ["author", "User @relation", ""],
             ["likes", "Like[]", ""],
@@ -558,7 +635,7 @@ const article = await prisma.article.findUnique({
 const article = await prisma.article.create({
   data: {
     title, slug, content, excerpt,
-    authorId: session.user.id
+    authorId: userId  // from JWT payload
   }
 })
 
@@ -572,6 +649,45 @@ await prisma.article.update({
 await prisma.article.delete({
   where: { id: articleId }
 })`}</MonoCode>
+      </div>
+    </div>
+  </div>
+);
+
+const SlideSlug = () => (
+  <div className="flex flex-col h-full p-10">
+    <SlideHeader tag="Article" title="Slug Generation — URL-Friendly IDs" />
+    <div className="grid grid-cols-2 gap-4 flex-1">
+      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+        <h3 className="text-sm font-bold text-gray-900 mb-2">🔗 Title → Slug</h3>
+        <MonoCode>{`// lib/slug.ts
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\\w\\s-]/g, "")  // remove special chars
+    .replace(/[\\s_-]+/g, "-")    // spaces to hyphens
+    .replace(/^-+|-+$/g, "")     // trim hyphens
+}
+
+// "Hello World!" → "hello-world"
+// "My First Article" → "my-first-article"`}</MonoCode>
+      </div>
+      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
+        <h3 className="text-sm font-bold text-gray-900 mb-2">🔄 Handle Duplicates</h3>
+        <MonoCode>{`// When creating article
+let slug = slugify(title)
+const existing = await prisma.article.findUnique({
+  where: { slug }
+})
+if (existing) {
+  slug = slug + "-" + Date.now()
+}
+// Save with unique slug`}</MonoCode>
+        <div className="mt-3 bg-indigo-50 border border-indigo-200 rounded-lg p-2.5">
+          <p className="text-xs font-bold text-indigo-800">💡 URL = /article/[slug]</p>
+          <p className="text-xs text-indigo-700 mt-1">Slug is @unique in Prisma schema</p>
+        </div>
       </div>
     </div>
   </div>
@@ -869,7 +985,7 @@ const Slide16 = () => (
     <div className="grid grid-cols-3 gap-4 max-w-xl">
       {[
         { icon: "🏗️", title: "Full-Stack App", sub: "Next.js + SQLite" },
-        { icon: "🔐", title: "Auth System", sub: "Login + Sessions" },
+        { icon: "🔐", title: "Auth System", sub: "Login + JWT" },
         { icon: "✍️", title: "Rich Text Content", sub: "Tiptap Editor + Feed" },
       ].map((c) => (
         <div
@@ -896,14 +1012,17 @@ const SLIDES = [
   { id: 6, component: <SlideSection num="02" tag="Framework" title="Next.js App Router" /> },
   { id: 7, component: <Slide7 /> },
   { id: 8, component: <Slide8 /> },
-  { id: 9, component: <SlideSection num="03" tag="Database" title="Prisma + SQLite" /> },
-  { id: 10, component: <Slide10 /> },
-  { id: 11, component: <Slide11 /> },
-  { id: 12, component: <SlideSection num="04" tag="Security" title="Authentication with JWT" /> },
-  { id: 13, component: <Slide13 /> },
-  { id: 14, component: <Slide14 /> },
-  { id: 15, component: <Slide15 /> },
-  { id: 16, component: <Slide16 /> },
+  { id: 9, component: <SlideEnv /> },
+  { id: 10, component: <SlideZod /> },
+  { id: 11, component: <SlideSection num="03" tag="Database" title="Prisma + SQLite" /> },
+  { id: 12, component: <Slide10 /> },
+  { id: 13, component: <Slide11 /> },
+  { id: 14, component: <SlideSlug /> },
+  { id: 15, component: <SlideSection num="04" tag="Security" title="Authentication with JWT" /> },
+  { id: 16, component: <Slide13 /> },
+  { id: 17, component: <Slide14 /> },
+  { id: 18, component: <Slide15 /> },
+  { id: 19, component: <Slide16 /> },
 ];
 
 export default function Home() {
