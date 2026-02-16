@@ -68,12 +68,12 @@ const Slide1 = () => (
       Building a <span className="text-emerald-400">Medium Clone</span>
     </h1>
     <p className="text-lg text-white/50 mb-8">
-      Learn full-stack development with Next.js, Prisma & PostgreSQL
+      Learn full-stack development with Next.js, Prisma & SQLite
     </p>
     <div className="flex gap-2 flex-wrap justify-center">
       {[
         "⚡ Next.js 14",
-        "🗄️ PostgreSQL",
+        "🗄️ SQLite",
         "🔐 JWT",
         "🎨 Tailwind CSS",
         "✍️ Tiptap Editor",
@@ -165,8 +165,8 @@ const Slide3 = () => (
         },
         {
           icon: "🗄️",
-          name: "PostgreSQL",
-          desc: "Relational database. Stores users, articles, and all data.",
+          name: "SQLite",
+          desc: "File-based database. Stores users, articles, all data in one file.",
         },
         {
           icon: "🔷",
@@ -190,8 +190,8 @@ const Slide3 = () => (
         },
         {
           icon: "🟢",
-          name: "Neon DB",
-          desc: "Free cloud PostgreSQL. No local DB setup required.",
+          name: "SQLite (file)",
+          desc: "Single file. No cloud or server setup required.",
         },
         {
           icon: "🔑",
@@ -296,7 +296,7 @@ const Slide5 = () => (
             "JWT Token Verification",
             "Prisma ORM Queries",
             "Business Logic",
-            "PostgreSQL Database",
+            "SQLite Database",
           ].map((i) => (
             <div
               key={i}
@@ -675,7 +675,7 @@ const Slide14 = () => (
           { arrow: true, label: "if token\nvalid" },
           { icon: "⚙️", label: "API Route", sub: "Validate data" },
           { arrow: true, label: "prisma.article\n.create()" },
-          { icon: "🗄️", label: "PostgreSQL", sub: "Save to DB" },
+          { icon: "🗄️", label: "SQLite", sub: "Save to DB" },
           { arrow: true, label: "{ id, slug }" },
           { icon: "✅", label: "Response", sub: "201 Created", highlight: true },
         ].map((item, i) =>
@@ -739,15 +739,15 @@ const Slide15 = () => (
             {
               time: "09:00",
               title: "Project Setup",
-              desc: "create-next-app, install packages, connect Neon DB",
-              tags: ["Next.js", "Neon"],
+              desc: "create-next-app, install packages, setup SQLite",
+              tags: ["Next.js", "SQLite"],
               color: "indigo",
             },
             {
               time: "10:00",
               title: "Database Schema",
               desc: "Write Prisma schema, run db push, explore Prisma Studio",
-              tags: ["Prisma", "PostgreSQL"],
+              tags: ["Prisma", "SQLite"],
               color: "indigo",
             },
             {
@@ -868,7 +868,7 @@ const Slide16 = () => (
     </p>
     <div className="grid grid-cols-3 gap-4 max-w-xl">
       {[
-        { icon: "🏗️", title: "Full-Stack App", sub: "Next.js + PostgreSQL" },
+        { icon: "🏗️", title: "Full-Stack App", sub: "Next.js + SQLite" },
         { icon: "🔐", title: "Auth System", sub: "Login + Sessions" },
         { icon: "✍️", title: "Rich Text Content", sub: "Tiptap Editor + Feed" },
       ].map((c) => (
@@ -896,7 +896,7 @@ const SLIDES = [
   { id: 6, component: <SlideSection num="02" tag="Framework" title="Next.js App Router" /> },
   { id: 7, component: <Slide7 /> },
   { id: 8, component: <Slide8 /> },
-  { id: 9, component: <SlideSection num="03" tag="Database" title="Prisma + PostgreSQL" /> },
+  { id: 9, component: <SlideSection num="03" tag="Database" title="Prisma + SQLite" /> },
   { id: 10, component: <Slide10 /> },
   { id: 11, component: <Slide11 /> },
   { id: 12, component: <SlideSection num="04" tag="Security" title="Authentication with JWT" /> },
