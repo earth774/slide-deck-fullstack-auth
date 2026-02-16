@@ -154,64 +154,51 @@ const Slide2 = () => (
   </div>
 );
 
-const Slide3 = () => (
-  <div className="flex flex-col h-full p-10">
-    <SlideHeader tag="Technology" title="Tech Stack Overview" />
-    <div className="grid grid-cols-4 gap-3 flex-1">
-      {[
-        {
-          icon: "⚛️",
-          name: "Next.js 14",
-          desc: "Framework for React. Frontend UI + Backend API in one project.",
-        },
-        {
-          icon: "🗄️",
-          name: "SQLite",
-          desc: "File-based database. Stores users, articles, all data in one file.",
-        },
-        {
-          icon: "🔷",
-          name: "Prisma ORM",
-          desc: "Query DB with TypeScript. No raw SQL needed.",
-        },
-        {
-          icon: "🔐",
-          name: "JWT (jose)",
-          desc: "Sign & verify tokens. Stateless auth — no session storage needed.",
-        },
-        {
-          icon: "🎨",
-          name: "Tailwind CSS",
-          desc: "Utility-first CSS. Style directly in JSX without CSS files.",
-        },
-        {
-          icon: "✍️",
-          name: "Tiptap Editor",
-          desc: "Rich text editor — like a mini Google Docs in your app.",
-        },
-        {
-          icon: "📋",
-          name: "Zod",
-          desc: "Validate API input. Type-safe schemas — catch bad data early.",
-        },
-        {
-          icon: "🔑",
-          name: "bcrypt",
-          desc: "Hash passwords before storing. Never save plaintext passwords.",
-        },
-      ].map((s) => (
-        <div
-          key={s.name}
-          className="bg-slate-50 border border-slate-100 rounded-xl p-3"
-        >
-          <div className="text-xl mb-1">{s.icon}</div>
-          <h3 className="text-xs font-bold text-gray-900 mb-1">{s.name}</h3>
-          <p className="text-xs text-gray-500 leading-relaxed">{s.desc}</p>
+const Slide3 = () => {
+  const stack = [
+    { icon: "⚛️", name: "Next.js 14", desc: "Framework for React. Frontend UI + Backend API in one project.", group: "Framework" },
+    { icon: "🗄️", name: "SQLite", desc: "File-based database. Stores users, articles, all data in one file.", group: "Database" },
+    { icon: "🔷", name: "Prisma ORM", desc: "Query DB with TypeScript. No raw SQL needed.", group: "Database" },
+    { icon: "🔐", name: "JWT (jose)", desc: "Sign & verify tokens. Stateless auth — no session storage needed.", group: "Auth" },
+    { icon: "🔑", name: "bcrypt", desc: "Hash passwords before storing. Never save plaintext passwords.", group: "Auth" },
+    { icon: "🎨", name: "Tailwind CSS", desc: "Utility-first CSS. Style directly in JSX without CSS files.", group: "Frontend" },
+    { icon: "✍️", name: "Tiptap Editor", desc: "Rich text editor — like a mini Google Docs in your app.", group: "Frontend" },
+    { icon: "📋", name: "Zod", desc: "Validate API input. Type-safe schemas — catch bad data early.", group: "Tools" },
+  ];
+  const groups = ["Framework", "Database", "Auth", "Frontend", "Tools"];
+  return (
+    <div className="flex flex-col h-full p-10">
+      <SlideHeader tag="Technology" title="Tech Stack Overview" />
+      <div className="grid grid-cols-4 gap-4 flex-1 min-h-0">
+        {stack.map((s) => (
+          <div
+            key={s.name}
+            className={`bg-slate-50 border border-slate-100 rounded-xl p-4 flex flex-col border-l-4 ${
+              s.group === "Framework" ? "border-l-indigo-500" :
+              s.group === "Database" ? "border-l-emerald-500" :
+              s.group === "Auth" ? "border-l-amber-500" :
+              s.group === "Frontend" ? "border-l-violet-500" : "border-l-slate-400"
+            }`}
+          >
+            <div className="text-2xl mb-2">{s.icon}</div>
+            <h3 className="text-sm font-bold text-gray-900 mb-1.5">{s.name}</h3>
+            <p className="text-xs text-gray-500 leading-relaxed flex-1">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 flex items-center justify-between gap-4 pt-4 border-t border-slate-200">
+        <div className="flex gap-3 flex-wrap">
+          {groups.map((g) => (
+            <span key={g} className="text-xs font-medium px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-600 border border-indigo-100">
+              {g}
+            </span>
+          ))}
         </div>
-      ))}
+        <p className="text-xs text-slate-500 font-medium italic">Full-stack in one project</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const SlideSection = ({
   num,
@@ -1076,39 +1063,55 @@ export default function Home() {
       onMouseMove={handleMouseMove}
       className="min-h-screen flex flex-col items-center justify-center p-6"
       style={{
-        background: isFullscreen ? "#111" : "#1a1a2e",
+        background: isFullscreen
+          ? "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(30,27,75,0.4), transparent), radial-gradient(ellipse 60% 40% at 50% 100%, rgba(15,23,42,0.5), transparent), linear-gradient(180deg, #0a0a0f 0%, #0f0f14 50%, #0a0a0f 100%)"
+          : "#1a1a2e",
         cursor: isFullscreen && !showNav ? "none" : "default",
+        transition: "background 0.4s ease",
       }}
     >
       <div
-        className="bg-white overflow-hidden shadow-2xl"
+        className="bg-white overflow-hidden"
         style={{
           borderRadius: isFullscreen ? "0" : "16px",
-          width: isFullscreen ? "100vw" : "100%",
-          maxWidth: isFullscreen ? "100vw" : "960px",
+          width: isFullscreen ? "min(100vw, 177.78vh)" : "100%",
+          maxWidth: isFullscreen ? "min(100vw, 177.78vh)" : "960px",
+          height: isFullscreen ? "min(100vh, 56.25vw)" : "auto",
           aspectRatio: "16/9",
-          transition: "border-radius 0.3s",
+          boxShadow: isFullscreen
+            ? "0 0 0 1px rgba(255,255,255,0.03), 0 25px 50px -12px rgba(0,0,0,0.5)"
+            : "0 25px 50px -12px rgba(0,0,0,0.25)",
+          transition: "border-radius 0.4s ease, box-shadow 0.4s ease",
         }}
       >
         {SLIDES[current].component}
       </div>
 
       <div
-        className="flex items-center gap-3 mt-5 bg-white/90 backdrop-blur rounded-full px-5 py-2.5 shadow-lg transition-all duration-300"
+        className="flex items-center gap-3 mt-5 rounded-full px-5 py-2.5 shadow-lg transition-all duration-300"
         style={{
           opacity: showNav ? 1 : 0,
           pointerEvents: showNav ? "auto" : "none",
           position: isFullscreen ? "fixed" : "relative",
-          bottom: isFullscreen ? "28px" : "auto",
+          bottom: isFullscreen ? "24px" : "auto",
           left: isFullscreen ? "50%" : "auto",
           transform: isFullscreen ? "translateX(-50%)" : "none",
           zIndex: 50,
+          background: isFullscreen
+            ? "rgba(15,15,20,0.85)"
+            : "rgba(255,255,255,0.9)",
+          backdropFilter: "blur(12px)",
+          border: isFullscreen ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.06)",
         }}
       >
         <button
           onClick={prev}
           disabled={current === 0}
-          className="text-gray-600 hover:bg-gray-100 px-2.5 py-1 rounded-lg disabled:opacity-30 disabled:cursor-default text-base transition"
+          className={`px-2.5 py-1 rounded-lg text-base transition disabled:cursor-default ${
+            isFullscreen
+              ? "text-white/80 hover:bg-white/10 disabled:opacity-30"
+              : "text-gray-600 hover:bg-gray-100 disabled:opacity-30"
+          }`}
         >
           ◀
         </button>
@@ -1118,7 +1121,13 @@ export default function Home() {
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              className={`rounded-full transition-all ${i === current ? "w-5 h-2 bg-indigo-500" : "w-2 h-2 bg-gray-300 hover:bg-gray-400"}`}
+              className={`rounded-full transition-all ${
+                i === current
+                  ? "w-5 h-2 bg-indigo-500"
+                  : isFullscreen
+                    ? "w-2 h-2 bg-white/25 hover:bg-white/40"
+                    : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
+              }`}
             />
           ))}
         </div>
@@ -1126,19 +1135,29 @@ export default function Home() {
         <button
           onClick={next}
           disabled={current === total - 1}
-          className="text-gray-600 hover:bg-gray-100 px-2.5 py-1 rounded-lg disabled:opacity-30 disabled:cursor-default text-base transition"
+          className={`px-2.5 py-1 rounded-lg text-base transition disabled:cursor-default ${
+            isFullscreen
+              ? "text-white/80 hover:bg-white/10 disabled:opacity-30"
+              : "text-gray-600 hover:bg-gray-100 disabled:opacity-30"
+          }`}
         >
           ▶
         </button>
 
-        <span className="text-xs text-gray-400 font-medium">
+        <span
+          className={`text-xs font-medium ${isFullscreen ? "text-white/50" : "text-gray-400"}`}
+        >
           {current + 1} / {total}
         </span>
 
         <button
           onClick={toggleFullscreen}
           title={isFullscreen ? "Exit fullscreen (F)" : "Fullscreen (F)"}
-          className="ml-1 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 px-2.5 py-1.5 rounded-lg transition text-sm font-bold border border-gray-200"
+          className={`ml-1 px-2.5 py-1.5 rounded-lg transition text-sm font-bold ${
+            isFullscreen
+              ? "text-white/70 hover:text-white hover:bg-white/10 border border-white/20"
+              : "text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 border border-gray-200"
+          }`}
         >
           ⛶
           <span className="ml-1 text-xs">
