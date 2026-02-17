@@ -2,8 +2,11 @@
 
 import { useState, useRef, useEffect } from "react";
 
+// Neo-Brutalism: offset black shadow utility
+const brutShadow = "shadow-[4px_4px_0_0_#000]";
+
 const MonoCode = ({ children }: { children: React.ReactNode }) => (
-  <pre className="bg-gray-900 text-green-300 rounded-lg p-3 text-xs leading-relaxed overflow-hidden font-mono">
+  <pre className={`bg-black text-lime-300 border-2 border-black p-3 text-xs leading-relaxed overflow-hidden font-mono ${brutShadow}`}>
     {children}
   </pre>
 );
@@ -16,14 +19,14 @@ const Tag = ({
   children: React.ReactNode;
 }) => {
   const colors = {
-    indigo: "bg-indigo-100 text-indigo-700 border-indigo-200",
-    green: "bg-green-100 text-green-700 border-green-200",
-    orange: "bg-orange-100 text-orange-700 border-orange-200",
-    red: "bg-red-100 text-red-700 border-red-200",
+    indigo: "bg-indigo-300 text-black border-black",
+    green: "bg-lime-300 text-black border-black",
+    orange: "bg-amber-300 text-black border-black",
+    red: "bg-red-300 text-black border-black",
   };
   return (
     <span
-      className={`text-xs font-bold px-2 py-0.5 rounded border ${colors[color]}`}
+      className={`text-xs font-black px-2 py-0.5 border-2 ${colors[color]} ${brutShadow}`}
     >
       {children}
     </span>
@@ -38,36 +41,27 @@ const SlideHeader = ({
   title: string;
 }) => (
   <div className="mb-5">
-    <p className="text-xs font-bold tracking-widest uppercase text-indigo-500 mb-1">
+    <p className="text-xs font-black tracking-widest uppercase text-black mb-1">
       {tag}
     </p>
-    <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
+    <h2 className="text-2xl font-black text-black tracking-tight">
       {title}
     </h2>
-    <div className="w-10 h-0.5 bg-indigo-500 rounded mt-2" />
+    <div className="w-16 h-1 bg-black mt-2" />
   </div>
 );
 
 // ── Individual Slides ──────────────────────────────────────────
 
 const Slide1 = () => (
-  <div
-    className="flex flex-col items-center justify-center h-full text-center px-12"
-    style={{
-      background:
-        "linear-gradient(135deg,#0f0f0f,#1a1a2e,#16213e)",
-    }}
-  >
-    <span className="text-xs font-bold tracking-widest uppercase border border-white/20 text-white/70 px-4 py-1.5 rounded-full mb-6">
+  <div className="flex flex-col items-center justify-center h-full text-center px-12 bg-lime-100">
+    <span className="text-xs font-black tracking-widest uppercase border-2 border-black bg-white px-4 py-1.5 mb-6 shadow-[4px_4px_0_0_#000]">
       Full-Stack Workshop · 2 Days
     </span>
-    <h1
-      className="text-5xl font-extrabold text-white leading-tight mb-4"
-      style={{ letterSpacing: "-1px" }}
-    >
-      Building a <span className="text-emerald-400">Medium Clone</span>
+    <h1 className="text-5xl font-black text-black leading-tight mb-4" style={{ letterSpacing: "-1px" }}>
+      Building a <span className="bg-lime-400 text-black px-2 border-2 border-black shadow-[4px_4px_0_0_#000]">Medium Clone</span>
     </h1>
-    <p className="text-lg text-white/50 mb-8">
+    <p className="text-lg text-black/80 mb-8 font-bold">
       Learn full-stack development with Next.js, Prisma & SQLite
     </p>
     <div className="flex gap-2 flex-wrap justify-center">
@@ -81,7 +75,7 @@ const Slide1 = () => (
       ].map((t) => (
         <span
           key={t}
-          className="text-xs text-white/60 border border-white/15 bg-white/5 px-3 py-1.5 rounded-full"
+          className="text-xs font-bold border-2 border-black bg-white px-3 py-1.5 shadow-[4px_4px_0_0_#000]"
         >
           {t}
         </span>
@@ -91,7 +85,7 @@ const Slide1 = () => (
 );
 
 const Slide2 = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Project Overview" title="What We're Building" />
     <div className="grid grid-cols-3 gap-4 flex-1">
       {[
@@ -134,7 +128,7 @@ const Slide2 = () => (
       ].map((c) => (
         <div
           key={c.title}
-          className="bg-slate-50 border border-slate-100 rounded-xl p-4"
+          className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]"
         >
           <div className="text-2xl mb-2">{c.icon}</div>
           <Tag color={c.color}>{c.label}</Tag>
@@ -167,17 +161,17 @@ const Slide3 = () => {
   ];
   const groups = ["Framework", "Database", "Auth", "Frontend", "Tools"];
   return (
-    <div className="flex flex-col h-full p-10">
+    <div className="flex flex-col h-full p-10 bg-amber-50">
       <SlideHeader tag="Technology" title="Tech Stack Overview" />
       <div className="grid grid-cols-4 gap-4 flex-1 min-h-0">
         {stack.map((s) => (
           <div
             key={s.name}
-            className={`bg-slate-50 border border-slate-100 rounded-xl p-4 flex flex-col border-l-4 ${
-              s.group === "Framework" ? "border-l-indigo-500" :
-              s.group === "Database" ? "border-l-emerald-500" :
-              s.group === "Auth" ? "border-l-amber-500" :
-              s.group === "Frontend" ? "border-l-violet-500" : "border-l-slate-400"
+            className={`bg-white border-2 border-black p-4 flex flex-col shadow-[4px_4px_0_0_#000] ${
+              s.group === "Framework" ? "border-l-[6px] border-l-indigo-500" :
+              s.group === "Database" ? "border-l-[6px] border-l-emerald-500" :
+              s.group === "Auth" ? "border-l-[6px] border-l-amber-500" :
+              s.group === "Frontend" ? "border-l-[6px] border-l-violet-500" : "border-l-[6px] border-l-slate-500"
             }`}
           >
             <div className="text-2xl mb-2">{s.icon}</div>
@@ -186,15 +180,15 @@ const Slide3 = () => {
           </div>
         ))}
       </div>
-      <div className="mt-4 flex items-center justify-between gap-4 pt-4 border-t border-slate-200">
+      <div className="mt-4 flex items-center justify-between gap-4 pt-4 border-t-2 border-black">
         <div className="flex gap-3 flex-wrap">
           {groups.map((g) => (
-            <span key={g} className="text-xs font-medium px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-600 border border-indigo-100">
+            <span key={g} className="text-xs font-black px-2.5 py-1 bg-white text-black border-2 border-black shadow-[3px_3px_0_0_#000]">
               {g}
             </span>
           ))}
         </div>
-        <p className="text-xs text-slate-500 font-medium italic">Full-stack in one project</p>
+        <p className="text-xs text-black font-black italic">Full-stack in one project</p>
       </div>
     </div>
   );
@@ -209,22 +203,19 @@ const SlideSection = ({
   tag: string;
   title: string;
 }) => (
-  <div
-    className="flex flex-col items-center justify-center h-full text-center"
-    style={{ background: "linear-gradient(135deg,#f8f9ff,#ede9ff)" }}
-  >
-    <div className="text-8xl font-black text-indigo-100 leading-none mb-2">
+  <div className="flex flex-col items-center justify-center h-full text-center bg-lime-200">
+    <div className="text-8xl font-black text-black/20 leading-none mb-2 border-4 border-black p-4 inline-block shadow-[6px_6px_0_0_#000]">
       {num}
     </div>
-    <p className="text-xs font-bold tracking-widest uppercase text-indigo-500 mb-2">
+    <p className="text-xs font-black tracking-widest uppercase text-black mb-2">
       {tag}
     </p>
-    <h2 className="text-3xl font-extrabold text-gray-900">{title}</h2>
+    <h2 className="text-3xl font-black text-black border-2 border-black px-6 py-2 bg-white shadow-[4px_4px_0_0_#000]">{title}</h2>
   </div>
 );
 
 const Slide5 = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader
       tag="Architecture"
       title="Frontend vs Backend — How They Connect"
@@ -232,7 +223,7 @@ const Slide5 = () => (
     <div className="flex-1 flex items-center">
       <div className="grid grid-cols-3 gap-4 w-full items-center">
         {/* Frontend */}
-        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-4">
+        <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
           <h4 className="text-sm font-extrabold text-gray-900 mb-3">
             🖥️ Frontend (Browser)
           </h4>
@@ -245,37 +236,35 @@ const Slide5 = () => (
           ].map((i) => (
             <div
               key={i}
-              className="flex items-center gap-2 bg-white border border-slate-100 rounded-lg px-2 py-1.5 mb-1.5"
+              className="flex items-center gap-2 bg-lime-100 border-2 border-black px-2 py-1.5 mb-1.5"
             >
-              <div className="w-2 h-2 rounded-full bg-indigo-500 shrink-0" />
+              <div className="w-2 h-2 bg-indigo-500 shrink-0 border border-black" />
               <span className="text-xs text-gray-700">{i}</span>
             </div>
           ))}
-          <div className="mt-2 bg-indigo-50 rounded-lg p-2">
-            <p className="text-xs text-indigo-600 font-semibold">
-              📁 app/(main)/**/page.tsx
-            </p>
-            <p className="text-xs text-indigo-600">📁 components/**</p>
+          <div className="mt-2 bg-indigo-200 border-2 border-black p-2 shadow-[3px_3px_0_0_#000]">
+            <p className="text-xs text-black font-bold">📁 app/(main)/**/page.tsx</p>
+            <p className="text-xs text-black">📁 components/**</p>
           </div>
         </div>
         {/* Middle */}
         <div className="flex flex-col items-center gap-3">
-          <div className="bg-indigo-500 text-white text-xs font-bold rounded-xl px-4 py-3 text-center">
+          <div className="bg-indigo-500 text-white text-xs font-black border-2 border-black px-4 py-3 text-center shadow-[4px_4px_0_0_#000]">
             HTTP Request
             <br />
             <span className="opacity-70 font-normal">
               GET / POST / PUT / DELETE
             </span>
           </div>
-          <span className="text-2xl text-gray-400">⟷</span>
-          <div className="bg-emerald-500 text-white text-xs font-bold rounded-xl px-4 py-3 text-center">
+          <span className="text-2xl text-black font-black">⟷</span>
+          <div className="bg-emerald-500 text-white text-xs font-black border-2 border-black px-4 py-3 text-center shadow-[4px_4px_0_0_#000]">
             JSON Response
             <br />
             <span className="opacity-70 font-normal">{`{ data: [...] }`}</span>
           </div>
         </div>
         {/* Backend */}
-        <div className="bg-slate-50 border-2 border-slate-200 rounded-xl p-4">
+        <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
           <h4 className="text-sm font-extrabold text-gray-900 mb-3">
             ⚙️ Backend (Server)
           </h4>
@@ -288,17 +277,15 @@ const Slide5 = () => (
           ].map((i) => (
             <div
               key={i}
-              className="flex items-center gap-2 bg-white border border-slate-100 rounded-lg px-2 py-1.5 mb-1.5"
+              className="flex items-center gap-2 bg-emerald-100 border-2 border-black px-2 py-1.5 mb-1.5"
             >
-              <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+              <div className="w-2 h-2 bg-emerald-500 shrink-0 border border-black" />
               <span className="text-xs text-gray-700">{i}</span>
             </div>
           ))}
-          <div className="mt-2 bg-emerald-50 rounded-lg p-2">
-            <p className="text-xs text-emerald-600 font-semibold">
-              📁 app/api/**/route.ts
-            </p>
-            <p className="text-xs text-emerald-600">📁 lib/prisma.ts</p>
+          <div className="mt-2 bg-emerald-200 border-2 border-black p-2 shadow-[3px_3px_0_0_#000]">
+            <p className="text-xs text-black font-bold">📁 app/api/**/route.ts</p>
+            <p className="text-xs text-black">📁 lib/prisma.ts</p>
           </div>
         </div>
       </div>
@@ -307,11 +294,11 @@ const Slide5 = () => (
 );
 
 const Slide7 = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Next.js" title="File-Based Routing — Folder = URL" />
     <div className="grid grid-cols-2 gap-4 flex-1">
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">
           📁 Folder Structure → URL
         </h3>
         <MonoCode>{`app/
@@ -327,8 +314,8 @@ const Slide7 = () => (
     └── articles/
         └── route.ts  → /api/articles`}</MonoCode>
       </div>
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">
           ⚡ Server vs Client Component
         </h3>
         <MonoCode>{`// Server Component (default)
@@ -351,11 +338,11 @@ export default function Editor() {
 );
 
 const Slide8 = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Next.js" title="API Routes — Backend Inside Next.js" />
     <div className="grid grid-cols-2 gap-4 flex-1">
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">
           📡 route.ts = Your API Endpoint
         </h3>
         <MonoCode>{`// app/api/articles/route.ts
@@ -380,8 +367,8 @@ export async function POST(req: Request) {
   return Response.json(article, { status: 201 })
 }`}</MonoCode>
       </div>
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-3">🔄 HTTP Methods</h3>
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-3">🔄 HTTP Methods</h3>
         <div className="flex flex-col gap-2">
           {[
             {
@@ -415,7 +402,7 @@ export async function POST(req: Request) {
           ].map((m) => (
             <div
               key={m.method}
-              className={`flex items-center gap-3 ${m.bg} border ${m.border} rounded-lg px-3 py-2`}
+              className={`flex items-center gap-3 ${m.bg} border-2 border-black px-3 py-2 shadow-[3px_3px_0_0_#000]`}
             >
               <span
                 className={`font-mono font-bold text-xs ${m.text} w-14 shrink-0`}
@@ -426,9 +413,9 @@ export async function POST(req: Request) {
             </div>
           ))}
         </div>
-        <div className="mt-3 bg-green-50 border border-green-200 rounded-lg p-2.5">
-          <p className="text-xs font-bold text-green-800">💡 Status Codes</p>
-          <p className="text-xs text-green-700 mt-1 leading-relaxed">
+        <div className="mt-3 bg-lime-200 border-2 border-black p-2.5 shadow-[3px_3px_0_0_#000]">
+          <p className="text-xs font-black text-black">💡 Status Codes</p>
+          <p className="text-xs text-black mt-1 leading-relaxed font-medium">
             200 OK · 201 Created · 400 Bad Request
             <br />
             401 Unauthorized · 404 Not Found · 500 Error
@@ -440,11 +427,11 @@ export async function POST(req: Request) {
 );
 
 const SlideEnv = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Setup" title="Environment Variables (.env)" />
     <div className="grid grid-cols-2 gap-4 flex-1">
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">📁 .env (never commit!)</h3>
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">📁 .env (never commit!)</h3>
         <MonoCode>{`# Prisma — SQLite
 DATABASE_URL="file:./dev.db"
 
@@ -454,16 +441,16 @@ JWT_SECRET="your-super-secret-key"
 # Optional: for production
 NODE_ENV=development`}</MonoCode>
       </div>
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">💡 Usage in Code</h3>
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">💡 Usage in Code</h3>
         <MonoCode>{`// lib/env.ts or directly
 const dbUrl = process.env.DATABASE_URL
 const jwtSecret = process.env.JWT_SECRET
 
 if (!jwtSecret) throw new Error("JWT_SECRET missing")`}</MonoCode>
-        <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-2.5">
-          <p className="text-xs font-bold text-amber-800">⚠️ Add .env to .gitignore</p>
-          <p className="text-xs text-amber-700 mt-1">Use .env.example for team (no secrets)</p>
+        <div className="mt-3 bg-amber-200 border-2 border-black p-2.5 shadow-[3px_3px_0_0_#000]">
+          <p className="text-xs font-black text-black">⚠️ Add .env to .gitignore</p>
+          <p className="text-xs text-black mt-1 font-medium">Use .env.example for team (no secrets)</p>
         </div>
       </div>
     </div>
@@ -471,11 +458,11 @@ if (!jwtSecret) throw new Error("JWT_SECRET missing")`}</MonoCode>
 );
 
 const SlideZod = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Validation" title="Input Validation with Zod" />
     <div className="grid grid-cols-2 gap-4 flex-1">
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">📋 Define Schema</h3>
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">📋 Define Schema</h3>
         <MonoCode>{`import { z } from "zod"
 
 const createArticleSchema = z.object({
@@ -486,8 +473,8 @@ const createArticleSchema = z.object({
 
 type CreateArticle = z.infer<typeof createArticleSchema>`}</MonoCode>
       </div>
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">✅ Validate in API</h3>
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">✅ Validate in API</h3>
         <MonoCode>{`export async function POST(req: Request) {
   const body = await req.json()
   const result = createArticleSchema.safeParse(body)
@@ -507,10 +494,10 @@ type CreateArticle = z.infer<typeof createArticleSchema>`}</MonoCode>
 );
 
 const Slide10 = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Database" title="Database Schema — 3 Main Tables" />
-    <div className="mb-3 bg-indigo-50 border border-indigo-100 rounded-lg px-4 py-2">
-      <p className="text-xs font-mono text-indigo-700">
+    <div className="mb-3 bg-indigo-200 border-2 border-black px-4 py-2 shadow-[3px_3px_0_0_#000]">
+      <p className="text-xs font-mono font-bold text-black">
         <span className="font-bold">SQLite:</span> datasource db &#123; provider = &quot;sqlite&quot; url = &quot;file:./dev.db&quot; &#125;
       </p>
     </div>
@@ -558,7 +545,7 @@ const Slide10 = () => (
       ].map((m) => (
         <div
           key={m.title}
-          className="bg-gray-900 rounded-xl p-4 overflow-hidden"
+          className="bg-black border-2 border-black p-4 overflow-hidden shadow-[4px_4px_0_0_#22c55e]"
         >
           <p className="text-purple-400 text-xs font-mono font-bold mb-3 pb-2 border-b border-white/10">
             {m.title}
@@ -587,7 +574,7 @@ const Slide10 = () => (
       ].map((r) => (
         <div
           key={r}
-          className="flex-1 bg-indigo-50 border border-indigo-100 rounded-lg px-3 py-2 text-xs text-indigo-600 font-mono text-center"
+          className="flex-1 bg-indigo-200 border-2 border-black px-3 py-2 text-xs text-black font-mono font-bold text-center shadow-[3px_3px_0_0_#000]"
         >
           {r}
         </div>
@@ -597,11 +584,11 @@ const Slide10 = () => (
 );
 
 const Slide11 = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Prisma" title="Prisma — TypeScript ORM in Action" />
     <div className="grid grid-cols-2 gap-4 flex-1">
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">🔍 Read Data</h3>
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">🔍 Read Data</h3>
         <MonoCode>{`// Get all articles with author info
 const articles = await prisma.article.findMany({
   include: {
@@ -616,8 +603,8 @@ const article = await prisma.article.findUnique({
   where: { slug: params.slug }
 })`}</MonoCode>
       </div>
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">✏️ Write Data</h3>
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">✏️ Write Data</h3>
         <MonoCode>{`// Create new article
 const article = await prisma.article.create({
   data: {
@@ -642,11 +629,11 @@ await prisma.article.delete({
 );
 
 const SlideSlug = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Article" title="Slug Generation — URL-Friendly IDs" />
     <div className="grid grid-cols-2 gap-4 flex-1">
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">🔗 Title → Slug</h3>
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">🔗 Title → Slug</h3>
         <MonoCode>{`// lib/slug.ts
 export function slugify(text: string): string {
   return text
@@ -660,8 +647,8 @@ export function slugify(text: string): string {
 // "Hello World!" → "hello-world"
 // "My First Article" → "my-first-article"`}</MonoCode>
       </div>
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">🔄 Handle Duplicates</h3>
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">🔄 Handle Duplicates</h3>
         <MonoCode>{`// When creating article
 let slug = slugify(title)
 const existing = await prisma.article.findUnique({
@@ -671,9 +658,9 @@ if (existing) {
   slug = slug + "-" + Date.now()
 }
 // Save with unique slug`}</MonoCode>
-        <div className="mt-3 bg-indigo-50 border border-indigo-200 rounded-lg p-2.5">
-          <p className="text-xs font-bold text-indigo-800">💡 URL = /article/[slug]</p>
-          <p className="text-xs text-indigo-700 mt-1">Slug is @unique in Prisma schema</p>
+        <div className="mt-3 bg-indigo-200 border-2 border-black p-2.5 shadow-[3px_3px_0_0_#000]">
+          <p className="text-xs font-black text-black">💡 URL = /article/[slug]</p>
+          <p className="text-xs text-black mt-1 font-medium">Slug is @unique in Prisma schema</p>
         </div>
       </div>
     </div>
@@ -681,7 +668,7 @@ if (existing) {
 );
 
 const Slide13 = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Authentication" title="Login Flow — Step by Step" />
     <div className="grid grid-cols-2 gap-4 flex-1">
       <div className="flex flex-col gap-2">
@@ -723,10 +710,10 @@ const Slide13 = () => (
           },
         ].map((s) => (
           <div key={s.n} className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center shrink-0">
+            <div className="w-7 h-7 bg-indigo-500 text-white text-xs font-black flex items-center justify-center shrink-0 border-2 border-black shadow-[2px_2px_0_0_#000]">
               {s.n}
             </div>
-            <div className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 flex items-center justify-between">
+            <div className="flex-1 bg-white border-2 border-black px-4 py-2 flex items-center justify-between shadow-[3px_3px_0_0_#000]">
               <div>
                 <p className="text-xs font-bold text-gray-900">{s.title}</p>
                 <p className="text-xs text-gray-500">{s.sub}</p>
@@ -736,8 +723,8 @@ const Slide13 = () => (
           </div>
         ))}
       </div>
-      <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
-        <h3 className="text-sm font-bold text-gray-900 mb-2">
+      <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]">
+        <h3 className="text-sm font-black text-black mb-2">
           🔐 Protect API Routes
         </h3>
         <MonoCode>{`// Any API that requires login
@@ -767,7 +754,7 @@ export async function POST(req: Request) {
 );
 
 const Slide14 = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="API Flow" title="Request Flow — Write Article" />
     <div className="flex-1 flex flex-col justify-center gap-4">
       <div className="flex items-center justify-center gap-1">
@@ -792,7 +779,7 @@ const Slide14 = () => (
           ) : (
             <div
               key={i}
-              className={`rounded-xl p-3 text-center min-w-20 border-2 ${"highlight" in item && item.highlight ? "bg-indigo-50 border-indigo-300" : "bg-slate-50 border-slate-200"}`}
+              className={`p-3 text-center min-w-20 border-2 border-black shadow-[3px_3px_0_0_#000] ${"highlight" in item && item.highlight ? "bg-indigo-300" : "bg-white"}`}
             >
               <div className="text-lg mb-1">{item.icon}</div>
               <p className="text-xs font-bold text-gray-900">{item.label}</p>
@@ -802,7 +789,7 @@ const Slide14 = () => (
         )}
       </div>
       <div className="flex gap-3">
-        <div className="flex-1 bg-red-50 border border-red-200 rounded-xl p-3">
+        <div className="flex-1 bg-red-200 border-2 border-black p-3 shadow-[3px_3px_0_0_#000]">
           <p className="text-xs font-bold text-red-700 mb-1">
             ❌ Not Logged In
           </p>
@@ -811,7 +798,7 @@ const Slide14 = () => (
             message
           </p>
         </div>
-        <div className="flex-1 bg-yellow-50 border border-yellow-200 rounded-xl p-3">
+        <div className="flex-1 bg-amber-200 border-2 border-black p-3 shadow-[3px_3px_0_0_#000]">
           <p className="text-xs font-bold text-yellow-700 mb-1">
             ⚠️ Invalid Data
           </p>
@@ -819,7 +806,7 @@ const Slide14 = () => (
             Validation fails → 400 Bad Request → Show specific error message
           </p>
         </div>
-        <div className="flex-1 bg-green-50 border border-green-200 rounded-xl p-3">
+        <div className="flex-1 bg-lime-200 border-2 border-black p-3 shadow-[3px_3px_0_0_#000]">
           <p className="text-xs font-bold text-green-700 mb-1">✅ Success</p>
           <p className="text-xs text-gray-600">
             Article saved → 201 Created → Redirect to /article/[slug]
@@ -831,7 +818,7 @@ const Slide14 = () => (
 );
 
 const Slide15 = () => (
-  <div className="flex flex-col h-full p-10">
+  <div className="flex flex-col h-full p-10 bg-amber-50">
     <SlideHeader tag="Schedule" title="2-Day Plan — What to Build Each Day" />
     <div className="grid grid-cols-2 gap-4 flex-1">
       {[
@@ -906,7 +893,7 @@ const Slide15 = () => (
       ].map((d) => (
         <div
           key={d.day}
-          className="bg-slate-50 border border-slate-100 rounded-xl p-4"
+          className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_0_#000]"
         >
           <h3 className="text-sm font-bold text-gray-900 mb-3">📅 {d.day}</h3>
           <div className="flex flex-col gap-2">
@@ -933,7 +920,7 @@ const Slide15 = () => (
                     {item.tags.map((t) => (
                       <span
                         key={t}
-                        className="text-xs bg-indigo-50 text-indigo-600 border border-indigo-100 px-2 py-0.5 rounded"
+                        className="text-xs bg-indigo-200 text-black font-bold border-2 border-black px-2 py-0.5 shadow-[2px_2px_0_0_#000]"
                       >
                         {t}
                       </span>
@@ -950,24 +937,15 @@ const Slide15 = () => (
 );
 
 const Slide16 = () => (
-  <div
-    className="flex flex-col items-center justify-center h-full text-center px-12"
-    style={{
-      background: "linear-gradient(135deg,#0f172a,#1e1b4b,#0f172a)",
-    }}
-  >
-    <span className="text-xs font-bold tracking-widest uppercase border border-white/20 text-white/70 px-4 py-1.5 rounded-full mb-6">
+  <div className="flex flex-col items-center justify-center h-full text-center px-12 bg-lime-100">
+    <span className="text-xs font-black tracking-widest uppercase border-2 border-black bg-white px-4 py-1.5 mb-6 shadow-[4px_4px_0_0_#000]">
       You&apos;ve Got This 🎉
     </span>
-    <h1
-      className="text-5xl font-extrabold text-white leading-tight mb-4"
-      style={{ letterSpacing: "-1px" }}
-    >
-      Let&apos;s Start <span className="text-emerald-400">Building!</span>
+    <h1 className="text-5xl font-black text-black leading-tight mb-4" style={{ letterSpacing: "-1px" }}>
+      Let&apos;s Start <span className="bg-lime-400 text-black px-2 border-2 border-black shadow-[4px_4px_0_0_#000]">Building!</span>
     </h1>
-    <p className="text-base text-white/50 mb-8">
-      By end of Day 2, you&apos;ll have a real full-stack app ready to show the
-      world.
+    <p className="text-base text-black font-bold mb-8">
+      By end of Day 2, you&apos;ll have a real full-stack app ready to show the world.
     </p>
     <div className="grid grid-cols-3 gap-4 max-w-xl">
       {[
@@ -977,11 +955,11 @@ const Slide16 = () => (
       ].map((c) => (
         <div
           key={c.title}
-          className="bg-white/5 border border-white/10 rounded-xl p-4 text-center"
+          className="bg-white border-2 border-black p-4 text-center shadow-[4px_4px_0_0_#000]"
         >
           <div className="text-3xl mb-2">{c.icon}</div>
-          <p className="text-sm font-bold text-white">{c.title}</p>
-          <p className="text-xs text-white/40 mt-1">{c.sub}</p>
+          <p className="text-sm font-black text-black">{c.title}</p>
+          <p className="text-xs text-black font-bold mt-1">{c.sub}</p>
         </div>
       ))}
     </div>
@@ -1063,32 +1041,28 @@ export default function Home() {
       onMouseMove={handleMouseMove}
       className="min-h-screen flex flex-col items-center justify-center p-6"
       style={{
-        background: isFullscreen
-          ? "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(30,27,75,0.4), transparent), radial-gradient(ellipse 60% 40% at 50% 100%, rgba(15,23,42,0.5), transparent), linear-gradient(180deg, #0a0a0f 0%, #0f0f14 50%, #0a0a0f 100%)"
-          : "#1a1a2e",
+        background: isFullscreen ? "#fef08a" : "#fef9c3",
         cursor: isFullscreen && !showNav ? "none" : "default",
         transition: "background 0.4s ease",
       }}
     >
       <div
-        className="bg-white overflow-hidden"
+        className="bg-white overflow-hidden border-4 border-black"
         style={{
-          borderRadius: isFullscreen ? "0" : "16px",
+          borderRadius: 0,
           width: isFullscreen ? "min(100vw, 177.78vh)" : "100%",
           maxWidth: isFullscreen ? "min(100vw, 177.78vh)" : "960px",
           height: isFullscreen ? "min(100vh, 56.25vw)" : "auto",
           aspectRatio: "16/9",
-          boxShadow: isFullscreen
-            ? "0 0 0 1px rgba(255,255,255,0.03), 0 25px 50px -12px rgba(0,0,0,0.5)"
-            : "0 25px 50px -12px rgba(0,0,0,0.25)",
-          transition: "border-radius 0.4s ease, box-shadow 0.4s ease",
+          boxShadow: "8px 8px 0 0 #000",
+          transition: "box-shadow 0.3s ease",
         }}
       >
         {SLIDES[current].component}
       </div>
 
       <div
-        className="flex items-center gap-3 mt-5 rounded-full px-5 py-2.5 shadow-lg transition-all duration-300"
+        className="flex items-center gap-3 mt-5 px-5 py-2.5 transition-all duration-300"
         style={{
           opacity: showNav ? 1 : 0,
           pointerEvents: showNav ? "auto" : "none",
@@ -1097,11 +1071,9 @@ export default function Home() {
           left: isFullscreen ? "50%" : "auto",
           transform: isFullscreen ? "translateX(-50%)" : "none",
           zIndex: 50,
-          background: isFullscreen
-            ? "rgba(15,15,20,0.85)"
-            : "rgba(255,255,255,0.9)",
-          backdropFilter: "blur(12px)",
-          border: isFullscreen ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.06)",
+          background: isFullscreen ? "rgba(15,15,20,0.9)" : "#fff",
+          border: "2px solid #000",
+          boxShadow: "4px 4px 0 0 #000",
         }}
       >
         <button
@@ -1167,7 +1139,7 @@ export default function Home() {
       </div>
 
       {!isFullscreen && (
-        <p className="text-white/30 text-xs mt-3">
+        <p className="text-black/60 text-xs mt-3 font-bold">
           ◀ ▶ navigate · F fullscreen · click dots to jump
         </p>
       )}
